@@ -1,0 +1,45 @@
+# Ambiente e chiavi di configurazione
+.env
+.env.*
+!.env.example
+
+# Ambienti virtuali Python
+.venv/
+venv/
+env/
+ENV/
+
+# Bytecode e cache Python
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+
+# Configurazioni IDE ed editor
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# File di sistema
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Output di elaborazione, grafici e report
+results/
+plots/
+clips/
+temp/
+tmp/
+*.log
+
+# File multimediali e video
+*.mp4
+*.mov
+*.avi
+*.webm
+*.mkv
+*.flv
+*.wmv
+*.m4v
