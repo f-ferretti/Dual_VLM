@@ -7,7 +7,7 @@ from datetime import datetime
 from typing import Optional, Callable, Dict, Any
 
 from schemas import (
-    DualLLMPipelineResult,
+    DualVLMPipelineResult,
     DetectorReport,
     ValidatorReport,
     ValidationVerdictEnum
@@ -25,7 +25,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - [%(levelname)s] - 
 logger = logging.getLogger(__name__)
 
 
-class DualLLMPipeline:
+class DualVLMPipeline:
     def __init__(
         self,
         detector_provider: str = "google",
@@ -63,7 +63,7 @@ class DualLLMPipeline:
             enable_agentic_video=self.enable_agentic_video
         )
 
-    def run(self, video_path: str, progress_callback: Optional[Callable[[str, float], None]] = None) -> DualLLMPipelineResult:
+    def run(self, video_path: str, progress_callback: Optional[Callable[[str, float], None]] = None) -> DualVLMPipelineResult:
         if "youtube.com" in video_path.lower() or "youtu.be" in video_path.lower():
             video_path = clean_youtube_url(video_path)
 
@@ -118,7 +118,7 @@ class DualLLMPipeline:
         total_duration = round(time.time() - start_time, 2)
         utc_timestamp = datetime.utcnow().strftime("%Y-%m-%d %H:%M:%S UTC")
 
-        result = DualLLMPipelineResult(
+        result = DualVLMPipelineResult(
             timestamp_utc=utc_timestamp,
             video_path=video_path if is_youtube else os.path.abspath(video_path),
             video_duration_seconds=video_info["duration_seconds"],
@@ -138,7 +138,7 @@ class DualLLMPipeline:
 
         return result
 
-    def _save_results(self, result: DualLLMPipelineResult, base_name: str) -> None:
+    def _save_results(self, result: DualVLMPipelineResult, base_name: str) -> None:
         timestamp_slug = datetime.now().strftime("%Y%m%d_%H%M%S")
         raw_name = os.path.splitext(base_name)[0]
         sanitized_name = re.sub(r'[^a-zA-Z0-9_-]', '_', raw_name)
@@ -157,7 +157,7 @@ class DualLLMPipeline:
         logger.info(f"Report salvati in:\n- JSON: {json_path}\n- Markdown: {md_path}")
 
     @staticmethod
-    def generate_markdown_report(result: DualLLMPipelineResult) -> str:
+    def generate_markdown_report(result: DualVLMPipelineResult) -> str:
         d_rep = result.detector_report
         v_rep = result.validator_report
 

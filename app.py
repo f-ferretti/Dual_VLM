@@ -25,7 +25,7 @@ except Exception:
 import streamlit as st
 from dotenv import load_dotenv
 
-from pipeline import DualLLMPipeline
+from pipeline import DualVLMPipeline
 from video_utils import get_video_info, format_seconds_to_timestamp, clean_youtube_url
 from schemas import ValidationVerdictEnum
 
@@ -33,7 +33,7 @@ env_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
 load_dotenv(env_path, override=True)
 
 st.set_page_config(
-    page_title="Gameplay Bug Detector - Dual LLM Pipeline",
+    page_title="Video Game Anomaly Detection and Validation with Dual VLMs",
     layout="wide",
     initial_sidebar_state="expanded"
 )
@@ -98,7 +98,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("Gameplay Bug Detector - Dual LLM Pipeline")
+st.title("Video Game Anomaly Detection and Validation")
 st.caption("Sistema per il rilevamento e la validazione di anomalie in registrazioni di gameplay.")
 
 
@@ -672,7 +672,7 @@ def render_benchmark_dashboard_dual():
     total_fp_count = int(df_runs["fp_count"].sum()) if "fp_count" in df_runs.columns else 0
     avg_exec_time = df_runs["execution_time_seconds"].mean() if "execution_time_seconds" in df_runs.columns else 0.0
 
-    st.markdown("#### Riepilogo Esecuzioni e Filtraggio Dual-LLM")
+    st.markdown("#### Riepilogo Esecuzioni e Filtraggio Dual-VLM")
     k1, k2, k3, k4, k5 = st.columns(5)
     with k1:
         st.markdown(f'<div class="metric-card"><div class="metric-value">{total_runs_count}</div><div class="metric-label">Video Analizzati</div></div>', unsafe_allow_html=True)
@@ -725,7 +725,7 @@ def render_benchmark_dashboard_dual():
     with g_col1:
         p1 = os.path.join(out_dir, "01_model_performance_comparison.png")
         if os.path.exists(p1):
-            st.image(p1, caption="Confronto Metriche di Valutazione - Detector e Pipeline Dual-LLM", width='stretch')
+            st.image(p1, caption="Confronto Metriche di Valutazione - Detector e Pipeline Dual-VLM", width='stretch')
 
         p3 = os.path.join(out_dir, "03_execution_time_comparison.png")
         if os.path.exists(p3):
@@ -794,7 +794,7 @@ with tab_file:
             st.session_state["last_uploaded_source"] = uploaded_file.name
             st.session_state.pop("last_result", None)
 
-        temp_dir = os.path.join(tempfile.gettempdir(), "dual_llm_uploads")
+        temp_dir = os.path.join(tempfile.gettempdir(), "dual_vlm_uploads")
         os.makedirs(temp_dir, exist_ok=True)
         sanitized_filename = re.sub(r'[^a-zA-Z0-9_.-]', '_', uploaded_file.name)
         if not sanitized_filename:
@@ -886,7 +886,7 @@ if st.button("Avvia Analisi", type="primary", disabled=(target_video_input is No
             progress_bar.progress(progress_val)
 
         try:
-            pipeline = DualLLMPipeline(
+            pipeline = DualVLMPipeline(
                 detector_provider=det_prov_code,
                 detector_model=detector_model,
                 detector_api_key=det_key,
@@ -1174,7 +1174,7 @@ if "last_result" in st.session_state:
             mime="application/json"
         )
     with col_d2:
-        md_data = DualLLMPipeline.generate_markdown_report(res)
+        md_data = DualVLMPipeline.generate_markdown_report(res)
         st.download_button(
             label="Scarica Report Markdown",
             data=md_data,

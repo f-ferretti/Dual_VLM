@@ -157,7 +157,7 @@ class ValidatorReport(BaseModel):
     raw_response: Optional[str] = Field(default=None, description="Risposta testuale grezza del validatore")
 
 
-class DualLLMPipelineResult(BaseModel):
+class DualVLMPipelineResult(BaseModel):
     timestamp_utc: str = Field(description="Data e ora di esecuzione dell'analisi")
     video_path: str = Field(description="Percorso del video analizzato")
     video_duration_seconds: float = Field(default=0.0)

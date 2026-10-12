@@ -260,7 +260,7 @@ def compress_video_for_upload(
         return video_path
 
     if not output_dir:
-        output_dir = os.path.join(tempfile.gettempdir(), "dual_llm_compressed")
+        output_dir = os.path.join(tempfile.gettempdir(), "dual_vlm_compressed")
     os.makedirs(output_dir, exist_ok=True)
 
     base_name = os.path.splitext(os.path.basename(video_path))[0]

@@ -15,7 +15,7 @@ from schemas import (
     normalize_confidence,
     normalize_timestamp
 )
-from providers import BaseLLMProvider, get_provider
+from providers import BaseVLMProvider, get_provider
 from video_utils import format_seconds_to_timestamp
 
 logger = logging.getLogger(__name__)
@@ -104,7 +104,7 @@ Rispondi ESCLUSIVAMENTE in formato JSON con la seguente struttura:
 class ValidatorAgent:
     def __init__(
         self,
-        provider: Optional[BaseLLMProvider] = None,
+        provider: Optional[BaseVLMProvider] = None,
         provider_type: str = "google",
         model_name: str = "gemini-3.8-flash",
         api_key: Optional[str] = None,

@@ -27,7 +27,7 @@ plt.rcParams.update({
 
 def parse_all_results(results_dir: str = "results"):
     """
-    Esegue il parsing dei report JSON generati dalla pipeline Dual-LLM.
+    Esegue il parsing dei report JSON generati dalla pipeline Dual-VLM.
     Raggruppa le prestazioni per modello VLM ed estrae i dettagli dei bug confermati,
     includendo la baseline dello screening iniziale Solo Detector (Stadio 1).
     """
@@ -242,7 +242,7 @@ def parse_all_results(results_dir: str = "results"):
             "accuracy_pct": round(d_acc * 100, 2)
         })
 
-    # 2. Modelli Pipeline Dual-LLM
+    # 2. Modelli Pipeline Dual-VLM
     model_groups = df_runs.groupby("model_name")
     for model, group in model_groups:
         total_runs = len(group)
@@ -344,7 +344,7 @@ def generate_benchmark_charts(output_dir: str = "plots", results_dir: str = "res
     df_melted["model_label"] = df_melted["model_name"].map(format_model_label)
 
     ax = sns.barplot(data=df_melted, x="model_label", y="Percentuale", hue="Metrica", palette="viridis")
-    plt.title("Confronto Metriche di Valutazione - Detector e Pipeline Dual-LLM", fontsize=14, fontweight="bold", pad=35)
+    plt.title("Confronto Metriche di Valutazione - Detector e Pipeline Dual-VLM", fontsize=14, fontweight="bold", pad=35)
     plt.xlabel("Configurazione / Modello VLM", fontsize=11, fontweight="bold", labelpad=10)
     plt.ylabel("Percentuale (%)", fontsize=11, fontweight="bold")
     plt.ylim(0, 105)
@@ -486,7 +486,7 @@ def generate_benchmark_charts(output_dir: str = "plots", results_dir: str = "res
         p_vals = [p_prec, p_rec, p_f1]
 
         b1 = ax.bar(x - width/2, d_vals, width, label="Detector (Stadio 1)", color="#4575b4", edgecolor="#333333")
-        b2 = ax.bar(x + width/2, p_vals, width, label="Pipeline Dual-LLM", color="#2e7d32", edgecolor="#333333")
+        b2 = ax.bar(x + width/2, p_vals, width, label="Pipeline Dual-VLM", color="#2e7d32", edgecolor="#333333")
 
         if i == 0:
             legend_handles = [b1, b2]
@@ -520,7 +520,7 @@ def generate_benchmark_charts(output_dir: str = "plots", results_dir: str = "res
     # Unica legenda condivisa in alto al centro fuori dai subplot
     fig.legend(
         legend_handles, 
-        ["Detector (Stadio 1)", "Pipeline Dual-LLM"], 
+        ["Detector (Stadio 1)", "Pipeline Dual-VLM"],
         loc="upper center", 
         bbox_to_anchor=(0.5, 0.98), 
         ncol=2, 
@@ -538,7 +538,7 @@ def generate_benchmark_charts(output_dir: str = "plots", results_dir: str = "res
 
     # 6. Master benchmark dashboard a 4 quadranti
     fig, axes = plt.subplots(2, 2, figsize=(18, 14))
-    fig.suptitle("Quadro Comparativo Benchmark - Pipeline Dual-LLM", fontsize=16, fontweight="bold", y=0.98)
+    fig.suptitle("Quadro Comparativo Benchmark - Pipeline Dual-VLM", fontsize=16, fontweight="bold", y=0.98)
 
     # Quadrante A
     sns.barplot(data=df_melted, x="model_label", y="Percentuale", hue="Metrica", palette="viridis", ax=axes[0, 0])
@@ -577,7 +577,7 @@ def generate_benchmark_charts(output_dir: str = "plots", results_dir: str = "res
     q_labels = [d["config_label"] for d in quadrant_ablation_data]
 
     b_q1 = axes[1, 1].bar(q_x - q_w/2, q_det_p, q_w, label="Detector (Stadio 1)", color="#4575b4", edgecolor="#333333")
-    b_q2 = axes[1, 1].bar(q_x + q_w/2, q_pipe_p, q_w, label="Pipeline Dual-LLM", color="#2e7d32", edgecolor="#333333")
+    b_q2 = axes[1, 1].bar(q_x + q_w/2, q_pipe_p, q_w, label="Pipeline Dual-VLM", color="#2e7d32", edgecolor="#333333")
 
     for bar, val in zip(b_q1, q_det_p):
         axes[1, 1].text(bar.get_x() + bar.get_width() / 2, bar.get_height() + 1.2,

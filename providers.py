@@ -73,13 +73,13 @@ def clean_json_response(raw_text: Any) -> Any:
     raise ValueError(f"Impossibile effettuare il parsing del JSON dalla risposta del modello: {raw_text[:200]}...")
 
 
-class BaseLLMProvider(ABC):
+class BaseVLMProvider(ABC):
     @abstractmethod
     def generate_with_video(self, video_path: str, system_prompt: str, user_prompt: str) -> Dict[str, Any]:
         pass
 
 
-class GoogleGeminiProvider(BaseLLMProvider):
+class GoogleGeminiProvider(BaseVLMProvider):
     def __init__(
         self,
         model_name: str = "gemini-3.8-flash",
@@ -242,7 +242,7 @@ class GoogleGeminiProvider(BaseLLMProvider):
                 logger.warning(f"Impossibile eliminare il file temporaneo su Google Gemini: {e}")
 
 
-class OpenRouterLLMProvider(BaseLLMProvider):
+class OpenRouterVLMProvider(BaseVLMProvider):
     def __init__(self, model_name: str = "qwen/qwen3.7-flash", api_key: Optional[str] = None):
         self.model_name = model_name
         self.api_key = api_key or os.getenv("OPENROUTER_API_KEY")
@@ -392,7 +392,7 @@ def get_provider(
     model_name: str,
     api_key: Optional[str] = None,
     enable_agentic_video: bool = True
-) -> BaseLLMProvider:
+) -> BaseVLMProvider:
     provider_type = provider_type.lower().strip()
     if provider_type in ["google", "gemini", "google_ai_studio"]:
         return GoogleGeminiProvider(
@@ -401,6 +401,6 @@ def get_provider(
             enable_agentic_video=enable_agentic_video
         )
     elif provider_type in ["openrouter", "open_router"]:
-        return OpenRouterLLMProvider(model_name=model_name, api_key=api_key)
+        return OpenRouterVLMProvider(model_name=model_name, api_key=api_key)
     else:
         raise ValueError(f"Provider sconosciuto: {provider_type}. Scegli tra 'google' o 'openrouter'.")

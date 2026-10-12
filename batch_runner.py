@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from dotenv import load_dotenv
 
-from pipeline import DualLLMPipeline
+from pipeline import DualVLMPipeline
 from video_utils import get_video_info
 
 load_dotenv()
@@ -60,7 +60,7 @@ def run_batch(
 
     os.makedirs(output_dir, exist_ok=True)
 
-    pipeline = DualLLMPipeline(
+    pipeline = DualVLMPipeline(
         detector_provider=det_provider,
         detector_model=det_model,
         validator_provider=val_provider,
@@ -190,7 +190,7 @@ def run_batch(
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Batch Runner per Dual LLM Bug Detector.")
+    parser = argparse.ArgumentParser(description="Batch Runner per Dual VLM Bug Detector.")
     parser.add_argument("--video-dir", type=str, required=True, help="Directory contenente i video da analizzare")
     parser.add_argument("--output-dir", type=str, default="results", help="Directory di output per i report")
     parser.add_argument("--det-provider", type=str, default="google", choices=["google", "openrouter"], help="Provider per il rilevamento")
